@@ -1,0 +1,222 @@
+<html>
+<head>
+</head>
+
+<body>
+<form action="p1.php" method="POST">                                                                                                                                 
+username<br>
+<input type="text" name="uname" placeholder="enter name"> <br>
+password<br>
+<input type="text" name="passwd" placeholder="enter password"><br>
+<button type="submit" name="sub">login</button>
+
+</form>
+
+
+</body>
+</html>
+
+----------------------------------------------------------
+<?php
+if(isset($_POST))
+{
+    echo "welcome"; echo "<br>";
+    echo $_POST['uname']; echo "<br>";
+    echo $_POST['passwd']; echo "<br>";
+$a=$_POST['uname'];
+echo "$a";
+}
+
+?>
+
+---------------------------------------------------------
+//same page//
+
+<html>
+<head>
+</head>
+
+<body>
+<form method="POST">
+
+username<br>
+<input type="text" name="uname" placeholder="enter name"> <br>
+password<br>
+<input type="text" name="passwd" placeholder="enter password"><br>
+<button type="submit" name="sub">login</button>
+
+</form>
+</body>
+</html>
+
+<?php
+if(isset($_POST['sub']))
+{
+    echo "welcome"; echo "<br>";
+    echo $_POST['uname']; echo "<br>";
+    echo $_POST['passwd']; echo "<br>";
+$a=$_POST['uname'];
+echo "$a";
+}
+
+?>
+-------------------------------------------------------
+<?php
+
+$dbservername="localhost";
+$dbuser="root";
+$dbpassword="";
+$dbname="db1";
+$connect=mysqli_connect($dbservername,$dbuser,$dbpassword,$dbname);
+
+//retriving from database//
+if($connect)
+{
+    //echo "connected";
+    $q="select *from sam1";
+    $res=mysqli_query($connect,$q);  //description
+    //print_r($res);
+    if(mysqli_num_rows($res)>0)
+    {
+        //print_r(mysqli_fetch_assoc($res));
+       $x=mysqli_fetch_assoc($res);
+       echo $x['name'].'has studied in college'.$x['address'];
+    }
+
+
+}
+else{
+
+
+    echo "not coonected";
+}
+
+?> 
+----------------------------------------------------------------------------------------
+//insertion into database//
+
+
+<?php
+
+$dbservername="localhost";
+$dbuser="root";
+$dbpassword="";
+$dbname="db1";
+$connect=mysqli_connect($dbservername,$dbuser,$dbpassword,$dbname);
+
+//retriving from database//
+if($connect)
+{
+   if(isset($_POST['submit']))
+   {
+       $u=$_POST['name'];
+       $p=$_POST['password'];
+
+       $q="insert into formdb(userid,password) values('$u',$p)";
+//$q="delete from happy1 where 1";
+//$q="insert into happy1 values('sam','hyd','gnitc')";
+j//$q="update happy1 set name='siri'";
+
+
+
+$res=mysqli_query($connect,$q);
+if($res)
+{
+    echo "sucess";
+
+}
+else
+{
+    echo "fail";
+}
+
+   }
+}
+
+?> 
+------------------------------------------------------------------------------------------------
+                                      // files
+<?php
+if(isset($_POST['submit']))
+{
+    $image=$_FILES['image'];
+    print_r($image);
+    echo "file name is ".$image['name']; echo "<br>";
+    echo "file type is".$image['type']; echo "<br>";
+    echo "error ".$image['error']; echo "<br>";
+    echo "size is".$image['size']; echo "<br>";
+    echo "address is".$image['tmp_name']; echo "<br>";
+
+}
+
+
+?>
+-----------------------------------------------------------------------------
+
+//login system
+                             
+
+<?php
+$dbservername="Localhost";
+$dbuser="root";
+$dbpassword="";
+$dbname="db1";
+$connect=mysqli_connect($dbservername,$dbuser,$dbpassword,$dbname);
+
+if($connect)
+{
+    if(isset($_POST['submit']))
+    {
+        $uname=$_POST['name'];
+        $pass=$_POST['password'];
+        $dbpass="select password from formdb where userid='$uname'";
+    $res=mysqli_query($connect,$dbpass);   //did u get result after query
+    
+    if(mysqli_num_rows($res))     //is result have anything
+    {
+        $x=mysqli_fetch_assoc($res);  
+        if($x['password']===$pass)
+        {
+            echo "login successfull";
+            header("Location:https://www.linkedin.com/feed/");
+        }
+
+    else
+    {
+
+     header("Location:p1.php");
+
+    }
+}
+}
+}
+
+?>
+------------------------------------------------
+     //password encryption
+<?php
+$pass="sammu";
+$p=password_hash($pass,PASSWORD_BCRYPT);
+echo $p;
+echo "<br>";
+if(password_verify('sammu',$p))
+{
+    echo "correct";
+}
+else
+{
+    echo "incorrect";
+}
+?>
+---------------------------------------------------------------------------------------------------
+//cookie saved in pc, contains passwd also nt secure, unknownlogging, adverstisemnts
+<?php
+setcookie('user','vivek','time()+600');//setting
+if($_COOKIE['user'])
+{
+    echo "thank you for returning my page again"; 
+}
+setcookie('user','vivek','time()-600'); //deletion
+?>
+
+//sesssion contains session id stored in server
